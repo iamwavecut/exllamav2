@@ -122,9 +122,9 @@ jobs:
 
       # Setup Python
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.pyver }}
 
@@ -191,7 +191,7 @@ jobs:
 
       - name: Setup Mamba
         if: matrix.cuda != ''
-        uses: conda-incubator/setup-miniconda@v2.3.0
+        uses: conda-incubator/setup-miniconda@v4
         with:
           activate-environment: "exllama"
           python-version: ${{ matrix.pyver }}
@@ -261,13 +261,13 @@ jobs:
 
       # Upload files
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v7
         if: matrix.artname == 'wheel'
         with:
           name: 'wheel'
           path: ./dist/*
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v7
         if: matrix.artname == 'sdist'
         with:
           name: 'sdist'
@@ -275,7 +275,7 @@ jobs:
 
       - name: Upload files to GitHub release
         if: steps.package_version.outputs.PACKAGE_VERSION != 'None' && inputs.release == '1'
-        uses: svenstaro/upload-release-action@2.6.1
+        uses: svenstaro/upload-release-action@v2
         with:
           file: ./dist/*.whl
           tag: ${{ format('v{0}', steps.package_version.outputs.PACKAGE_VERSION) }}
